@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //findBy + 열이름(대문자시작)
     Optional<User> findByUsername(String username);
 
-    //유저네임으로 찾은 유저의 role을 업데이트 함(입력,수정,삭제시 @Modifying 붙음)
+    //유저네임으로 찾은 유저의 role 을 업데이트 함(입력,수정,삭제시 @Modifying 붙음)
     @Modifying
     @Query("update User set role=:role where username=:username")
     void updateUserRole(@Param("username") String username, @Param("role") Role role);
