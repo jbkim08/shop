@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService{
     }
 
     //유저네임으로 해당유저를 DB에서 찾기
+    @Override
     public Optional<User> findByUsername(String username){
         return userRepository.findByUsername(username);
     }
