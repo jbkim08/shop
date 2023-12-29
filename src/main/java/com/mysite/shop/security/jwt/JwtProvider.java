@@ -10,5 +10,7 @@ public interface JwtProvider {
 
     Authentication getAuthentication(HttpServletRequest request);
 
+    boolean isTokenValid(HttpServletRequest request);
+
     Claims extractClaims(HttpServletRequest request);
 }
