@@ -1,10 +1,14 @@
 package com.mysite.shop.security.jwt;
 
 import com.mysite.shop.security.UserPrinciple;
+import com.mysite.shop.utils.SecurityUtils;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +42,29 @@ public class JwtProviderImpl implements JwtProvider {
                 .setExpiration(new Date(System.currentTimeMillis()+JWT_EXPIRATION_IN_MS))
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
+    }
+
+    @Override
+    public Authentication getAuthentication(HttpServletRequest request){
+        return null;
+    }
+
+    //토큰에서 유저정보 claim 부분만 가져옴
+    @Override
+    public Claims extractClaims(HttpServletRequest request){
+        //리퀘스트 헤더에서 토큰만 가져옴
+        String token = SecurityUtils.extractAuthTokenFromRequest(request);
+
+        if(token == null) return null; //종료및 널값 리턴
+
+        Key key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
+
+        //토큰의 유저 정보부분을 리턴
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
 
