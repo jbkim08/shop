@@ -30,4 +30,7 @@ public class User {
     @Column(name = "role", nullable = false)
     private Role role;
 
+    //발행된 토큰은 DB 에는 저장되지 않는다.
+    @Transient
+    private String token;
 }
