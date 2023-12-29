@@ -11,12 +11,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl {
+public class AuthenticationServiceImpl implements AuthenticationService{
     // 필요한 객체를 생성자 주입받음
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
 
     //유저네임과 패스워드로 로그인후 토큰을 만들어 리턴
+    @Override
     public User signInAndReturnJWT(User signInRequest){
         //스프링 시큐리티에서 로그인하기
         Authentication authentication = authenticationManager.authenticate(
