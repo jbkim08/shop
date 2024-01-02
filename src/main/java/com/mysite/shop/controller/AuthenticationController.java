@@ -20,7 +20,7 @@ public class AuthenticationController {
     private final UserService userService;
 
     //가입하기
-    @PostMapping("/sign-up")
+    @PostMapping("sign-up")
     public ResponseEntity<Object> signUp(@RequestBody User user){
         //같은 유저가 있는지 확인해서 있으면 문제가 생김 상태를 리턴
         if(userService.findByUsername(user.getUsername()).isPresent()){
@@ -31,7 +31,7 @@ public class AuthenticationController {
     }
 
     //로그인하기
-    @PostMapping("/sign-in")
+    @PostMapping("sign-in")
     public ResponseEntity<Object> signIn(@RequestBody User user){
         //인증완료시 JWT 토큰이 리턴됨 상태는 OK
         return new ResponseEntity<>(authenticationService.signInAndReturnJWT(user), HttpStatus.OK);
