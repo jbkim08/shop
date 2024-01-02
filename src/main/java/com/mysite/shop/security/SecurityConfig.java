@@ -1,9 +1,11 @@
 package com.mysite.shop.security;
 
+import com.mysite.shop.model.Role;
 import com.mysite.shop.security.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,8 +39,10 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> corsConfigurationSource())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((auth) -> auth
-                                .requestMatchers("/api/authentication/**").permitAll()
-                                .anyRequest().authenticated()
+                        .requestMatchers("/api/authentication/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/products").permitAll()
+                        .requestMatchers("/api/products/**").hasRole(Role.ADMIN.name())
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
